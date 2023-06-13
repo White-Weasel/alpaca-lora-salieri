@@ -8,6 +8,7 @@ from typing import Union
 
 
 class Prompter(object):
+    # TODO: add context
     __slots__ = ("template", "_verbose")
 
     def __init__(self, template_name: str = "", verbose: bool = False):
