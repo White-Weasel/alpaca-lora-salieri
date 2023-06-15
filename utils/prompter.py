@@ -8,6 +8,7 @@ from typing import Union
 
 
 class Prompter(object):
+    # TODO: add context
     __slots__ = ("template", "_verbose")
 
     def __init__(self, template_name: str = "", verbose: bool = False):
@@ -26,10 +27,10 @@ class Prompter(object):
             )
 
     def generate_prompt(
-        self,
-        instruction: str,
-        input: Union[None, str] = None,
-        label: Union[None, str] = None,
+            self,
+            instruction: str,
+            input: Union[None, str] = None,
+            label: Union[None, str] = None,
     ) -> str:
         # returns the full prompt from instruction and optional input
         # if a label (=response, =output) is provided, it's also appended.
@@ -49,3 +50,27 @@ class Prompter(object):
 
     def get_response(self, output: str) -> str:
         return output.split(self.template["response_split"])[1].strip()
+
+
+class SaliePrompter(Prompter):
+    def generate_prompt(self,
+                        input,
+                        context: Union[None, str] = None,
+                        label: Union[None, str] = None,
+                        *args, **kwargs
+                        ) -> str:
+        # returns the full prompt from instruction and optional input
+        # if a label (=response, =output) is provided, it's also appended.
+        if context:
+            res = self.template["prompt_input"].format(
+                context=context, input=input
+            )
+        else:
+            res = self.template["prompt_no_context"].format(
+                input=input
+            )
+        if label:
+            res = f"{res}{label}"
+        if self._verbose:
+            print(res)
+        return res
