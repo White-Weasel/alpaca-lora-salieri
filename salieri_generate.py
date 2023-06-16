@@ -2,7 +2,7 @@ import sys
 import torch
 from peft import PeftModel
 from transformers import GenerationConfig, LlamaForCausalLM, LlamaTokenizer
-from utils.prompter import Prompter
+from utils.prompter import SaliePrompter
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -22,7 +22,7 @@ def main(
         lora_weights: str = "tloen/alpaca-lora-7b",
         prompt_template: str = "salieri",  # The prompt template to use, will default to alpaca.
 ):
-    prompter = Prompter(prompt_template)
+    prompter = SaliePrompter(prompt_template)
     tokenizer = LlamaTokenizer.from_pretrained(base_model)
     model = LlamaForCausalLM.from_pretrained(
         base_model,
