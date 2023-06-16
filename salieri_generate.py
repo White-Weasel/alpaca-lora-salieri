@@ -94,4 +94,4 @@ def main(
 
 
 if __name__ == '__main__':
-    main(lora_weights="binhgiangnguyendanh/alpaca-lora-TEST")
+    main(lora_weights="binhgiangnguyendanh/Salieri-Alpaca-Lora-7B")
