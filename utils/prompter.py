@@ -70,7 +70,10 @@ class SaliePrompter(Prompter):
                 input=input
             )
         if output:
-            res = f"{res}{output}"
+            res = f"{res}{output}" + self.template["end_of_text"]
         if self._verbose:
             print(res)
         return res
+
+    def get_response(self, output: str):
+        super().get_response(output).strip(self.template["end_of_text"])
