@@ -25,6 +25,7 @@ from transformers import LlamaForCausalLM, LlamaTokenizer
 from utils.prompter import Prompter
 
 
+# noinspection DuplicatedCode
 def train(
     # model/data params
     base_model: str = "",  # the only required argument
@@ -41,10 +42,10 @@ def train(
     lora_r: int = 8,
     lora_alpha: int = 16,
     lora_dropout: float = 0.05,
-    lora_target_modules: List[str] = [
+    lora_target_modules: List[str] = (
         "q_proj",
         "v_proj",
-    ],
+    ),
     # llm hyperparams
     train_on_inputs: bool = True,  # if False, masks out inputs in loss
     add_eos_token: bool = False,
@@ -112,7 +113,7 @@ def train(
     model = LlamaForCausalLM.from_pretrained(
         base_model,
         load_in_8bit=True,
-        torch_dtype=torch.float16,
+        # torch_dtype=torch.float16,
         device_map=device_map,
         low_cpu_mem_usage=True,
     )

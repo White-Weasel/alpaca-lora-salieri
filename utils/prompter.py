@@ -56,7 +56,7 @@ class SaliePrompter(Prompter):
     def generate_prompt(self,
                         input,
                         context: Union[None, str] = None,
-                        label: Union[None, str] = None,
+                        output: Union[None, str] = None,
                         *args, **kwargs
                         ) -> str:
         # returns the full prompt from instruction and optional input
@@ -69,8 +69,8 @@ class SaliePrompter(Prompter):
             res = self.template["prompt_no_context"].format(
                 input=input
             )
-        if label:
-            res = f"{res}{label}"
+        if output:
+            res = f"{res}{output}"
         if self._verbose:
             print(res)
         return res
