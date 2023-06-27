@@ -2,6 +2,5 @@
     "description": "Template used by Salieri.",
     "prompt_input": "As Salieri, response to the conversation with context:\n###CONTEXT:\n{context}\n###Conversation:\n{input}\n@Salieri: ~#endofprompt#~",
     "prompt_no_context": "As Salieri, response to the conversation with context:\n###Conversation:\n{input}\n@Salieri: ~#endofprompt#~",
-    "response_split": "~#endofprompt#~",
-    "end_of_text": "<|endoftext|>"
+    "response_split": "~#endofprompt#~"
 }
