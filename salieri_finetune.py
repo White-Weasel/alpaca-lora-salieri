@@ -41,10 +41,10 @@ def train(
         lora_r: int = 8,
         lora_alpha: int = 16,
         lora_dropout: float = 0.05,
-        lora_target_modules: List[str] = [
+        lora_target_modules: List[str] = (
             "q_proj",
             "v_proj",
-        ],
+        ),
         # llm hyperparams
         train_on_inputs: bool = True,  # if False, masks out inputs in loss
         add_eos_token: bool = True,
@@ -123,8 +123,8 @@ def train(
         0  # unk. we want this to be different from the eos token
     )
     tokenizer.padding_side = "left"  # Allow batched inference
-    tokenizer.bos_token_id = 0
-    tokenizer.eos_token_id = 1
+    tokenizer.bos_token_id = 1
+    tokenizer.eos_token_id = 2
 
     def tokenize(prompt, add_eos_token=True):
         # there's probably a way to do this with the tokenizer settings
@@ -154,22 +154,7 @@ def train(
             context='',
             output=data_point["output"],
         )
-        tokenized_full_prompt = tokenize(full_prompt)
-        if not train_on_inputs:
-            user_prompt = prompter.generate_prompt(data_point["input"])
-            tokenized_user_prompt = tokenize(
-                user_prompt, add_eos_token=add_eos_token
-            )
-            user_prompt_len = len(tokenized_user_prompt["input_ids"])
-
-            if add_eos_token:
-                user_prompt_len -= 1
-
-            tokenized_full_prompt["labels"] = [
-                                                  -100
-                                              ] * user_prompt_len + tokenized_full_prompt["labels"][
-                                                                    user_prompt_len:
-                                                                    ]  # could be sped up, probably
+        tokenized_full_prompt = tokenize(full_prompt, add_eos_token=add_eos_token)
         return tokenized_full_prompt
 
     model = prepare_model_for_int8_training(model)
