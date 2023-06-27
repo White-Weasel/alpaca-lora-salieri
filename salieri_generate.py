@@ -1,5 +1,6 @@
 import sys
 import torch
+import fire
 from peft import PeftModel
 from transformers import GenerationConfig, LlamaForCausalLM, LlamaTokenizer
 from utils.prompter import SaliePrompter
@@ -93,4 +94,5 @@ def main(
 
 
 if __name__ == '__main__':
-    main(lora_weights="binhgiangnguyendanh/Salieri-Alpaca-Lora-7B")
+    fire.Fire(main)
+    # main(lora_weights="binhgiangnguyendanh/Salieri-Alpaca-Lora-7B")
