@@ -112,7 +112,7 @@ def train(
     model = LlamaForCausalLM.from_pretrained(
         base_model,
         load_in_8bit=True,
-        torch_dtype=torch.float16,
+        # torch_dtype=torch.float16,
         device_map=device_map,
         low_cpu_mem_usage=True,
     )
@@ -248,6 +248,7 @@ def train(
             output_dir=output_dir,
             save_total_limit=3,
             load_best_model_at_end=True if val_set_size > 0 else False,
+            # load_best_model_at_end=False,
             ddp_find_unused_parameters=False if ddp else None,
             group_by_length=group_by_length,
             report_to="wandb" if use_wandb else None,
