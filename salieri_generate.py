@@ -51,7 +51,6 @@ def main(
 
     def evaluate(
             message,
-            instruction=None,
             temperature=0.1,
             top_p=0.75,
             top_k=40,
@@ -59,7 +58,7 @@ def main(
             max_new_tokens=500,
             **kwargs,
     ):
-        prompt = prompter.generate_prompt(instruction, message)
+        prompt = prompter.generate_prompt(input=message)
         inputs = tokenizer(prompt, return_tensors="pt")
         input_ids = inputs["input_ids"].to(device)
         generation_config = GenerationConfig(
