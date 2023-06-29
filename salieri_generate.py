@@ -1,4 +1,6 @@
 import sys
+import time
+
 import torch
 import fire
 from peft import PeftModel
@@ -28,7 +30,7 @@ def main(
     model = LlamaForCausalLM.from_pretrained(
         base_model,
         load_in_8bit=load_8bit,
-        torch_dtype=torch.float16,
+        # torch_dtype=torch.float16,
         # fixme: device_map="auto" cause accelerate not using full GPU
         device_map="auto",
         low_cpu_mem_usage=True,
@@ -36,7 +38,7 @@ def main(
     model = PeftModel.from_pretrained(
         model,
         lora_weights,
-        torch_dtype=torch.float16,
+        # torch_dtype=torch.float16,
     )
 
     model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
@@ -56,7 +58,7 @@ def main(
             top_p=0.75,
             top_k=40,
             num_beams=4,
-            max_new_tokens=500,
+            max_new_tokens=100,
             **kwargs,
     ):
         prompt = prompter.generate_prompt(input=message)
@@ -90,7 +92,10 @@ def main(
              "wearing masks unless you are doing a job that requires them. I suppose public or personal health may " \
              "override, but I'm not sure."
     print("Input:", input_)
-    print(f"Response: {evaluate(message=input_)}")
+    s_time = time.perf_counter()
+    print(f"{'-'*50}\nResponse: {evaluate(message=input_)}")
+    e_time = time.perf_counter()
+    print(f"{'-'*50}\nGenerated after {e_time-s_time} seconds")
 
 
 if __name__ == '__main__':
